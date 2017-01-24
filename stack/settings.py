@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'question.apps.QuestionConfig',
     'tag.apps.TagConfig',
     'user_profile.apps.UserProfileConfig',
+    'rest_framework',
 
 ]
 
@@ -72,6 +73,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'stack.wsgi.application'
+
+REST_FRAMEWORK = {
+
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 
 # Database
