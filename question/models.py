@@ -8,14 +8,14 @@ from user_profile.models import MyUser
 class Question(models.Model):
     user = models.ForeignKey(MyUser)
     tag = models.ManyToManyField(Tag)
-    title = models.CharField()
+    title = models.CharField(max_length=255)
     content = models.TextField()
 
 
 class Answer(models.Model):
     user = models.ForeignKey(MyUser)
     question = models.ForeignKey(Question)
-    title = models.CharField()
+    title = models.CharField(max_length=255)
     content = models.TextField()
 
 
