@@ -10,8 +10,6 @@ class MyUser(models.Model):
     )
 
     user = models.OneToOneField(User)
-    firstname = models.CharField(max_length=50, blank=True, null=True)
-    lastname = models.CharField(max_length=50, blank=True, null=True)
     date_of_birth = models.DateField(blank=True, null=True)
     avatar = models.ImageField(
         blank=True,
