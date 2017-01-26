@@ -21,3 +21,6 @@ class MyUser(models.Model):
     form = models.CharField(max_length=255, choices=ACTIVITY_CHOICES, default='S')
     rating = models.IntegerField()
     skill = models.ManyToManyField(Tag)
+
+    def __str__(self):
+        print('{}, {}'.format(self.user, self.date_of_birth))

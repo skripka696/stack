@@ -11,6 +11,9 @@ class Question(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
 
+    def __str__(self):
+        print('{}, {}'.format(self.user, self.title))
+
 
 class Answer(models.Model):
     user = models.ForeignKey(MyUser)
@@ -18,6 +21,8 @@ class Answer(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
 
+    def __str__(self):
+        print('{}, {}'.format(self.user, self.title))
 
 class Comment(models.Model):
     user = models.ForeignKey(MyUser)
@@ -27,9 +32,16 @@ class Comment(models.Model):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
 
+    def __str__(self):
+        print('{}'.format(self.user))
+
 
 class Void(models.Model):
     rating = models.IntegerField()
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
+
+    def __str__(self):
+        print('{}'.format(self.rating))
+

@@ -6,3 +6,6 @@ from django.db import models
 class Tag(models.Model):
     name = models.CharField(max_length=25)
     description = models.TextField()
+
+    def __str__(self):
+        print('{}'.format(self.name))
