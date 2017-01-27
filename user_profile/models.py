@@ -1,15 +1,14 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from tag.models import Tag
 
 
-class MyUser(models.Model):
+class User(AbstractUser):
     ACTIVITY_CHOICES = (
         ('W', 'work'),
         ('S', 'study'),
     )
 
-    user = models.OneToOneField(User)
     date_of_birth = models.DateField(blank=True, null=True)
     avatar = models.ImageField(
         blank=True,
@@ -19,8 +18,8 @@ class MyUser(models.Model):
     )
     place_of_activity = models.CharField(max_length=100)
     form = models.CharField(max_length=255, choices=ACTIVITY_CHOICES, default='S')
-    rating = models.IntegerField()
+    rating = models.IntegerField(default=0)
     skill = models.ManyToManyField(Tag)
 
     def __str__(self):
-        print('{}, {}'.format(self.user, self.date_of_birth))
+        return '{}, {}'.format(self.username, self.date_of_birth)
