@@ -6,7 +6,7 @@ from tag import serializers
 
 class TagView(viewsets.ModelViewSet):
     """
-    Returns a list of users.
+    Returns a list of tag.
     Edit, delete and add new ones.
     """
     queryset = Tag.objects.all()
