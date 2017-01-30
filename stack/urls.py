@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls import include
+from rest_framework.authtoken import views
 
 
 urlpatterns = [
@@ -26,4 +27,6 @@ urlpatterns = [
     url(r'^api/', include('user_profile.urls')),
     url(r'^api/', include('tag.urls')),
     url(r'^api/', include('question.urls')),
+    url(r'^api-token-auth/', views.obtain_auth_token)
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

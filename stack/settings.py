@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'tag.apps.TagConfig',
     'user_profile.apps.UserProfileConfig',
     'rest_framework',
+    'rest_framework.authtoken'
 
 ]
 
@@ -78,8 +79,14 @@ REST_FRAMEWORK = {
 
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
 }
+
+
 
 
 # Database
@@ -89,7 +96,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    },
 }
 
 
