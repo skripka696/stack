@@ -39,7 +39,7 @@ class Comment(models.Model):
         return '{}'.format(self.user)
 
 
-class Void(models.Model):
+class Vote(models.Model):
     rating = models.IntegerField()
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
@@ -48,3 +48,6 @@ class Void(models.Model):
     def __str__(self):
         return '{}'.format(self.rating)
 
+
+def count_vote(val):
+    pass

@@ -97,7 +97,9 @@
                                 var request = client.tag.read();
                                 request.done(function (data, textStatus, xhrObject){
                                       console.log(data);
+                                      $('.post-title').html(data.name)
                                             });
+
                             </script>
                             Man must explore, and this is exploration at its greatest
                         </h2>

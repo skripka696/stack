@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'tag.apps.TagConfig',
     'user_profile.apps.UserProfileConfig',
     'rest_framework',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'notifications',
 
 ]
 
