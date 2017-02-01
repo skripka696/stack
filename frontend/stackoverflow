@@ -1,0 +1,12 @@
+server {
+
+	server_name stackoverflow.loc;
+	root /home/user/stack/frontend;
+	
+	location /api/ {
+		proxy_pass http://stackoverflow.loc:8000;
+
+	}
+	
+}
+

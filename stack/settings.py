@@ -25,7 +25,7 @@ SECRET_KEY = '4dl!4jp-xs2(5-pm5byi-^$md$icsbw5bb@1yo0fs*3(%^9)jp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['stackoverflow.loc']
 
 
 # Application definition
