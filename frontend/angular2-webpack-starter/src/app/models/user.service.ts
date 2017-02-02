@@ -3,6 +3,7 @@ import {User} from './user.model';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class UserService{
@@ -22,6 +23,9 @@ export class UserService{
 	createNewUser(newUser: User): Observable<User>{
 		console.log('New User');
 		console.log(newUser);
-		return this.http.post('/api/users', newUser, this.jwt()).map((response: Response) => response.json());
+		return this.http.post('/api/users', newUser, 
+							this.jwt())
+							.map((response: Response) => response.json())
+							.catch((response: Response) => response.json());
 	}
 }
