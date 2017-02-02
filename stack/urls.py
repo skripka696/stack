@@ -20,6 +20,9 @@ from django.conf import settings
 from django.conf.urls import include
 from rest_framework.authtoken import views
 import notifications.urls
+from rest_framework_swagger.views import get_swagger_view
+
+schema_view = get_swagger_view(title='Pastebin API')
 
 
 urlpatterns = [
@@ -29,6 +32,7 @@ urlpatterns = [
     url(r'^api/', include('tag.urls')),
     url(r'^api/', include('question.urls')),
     url(r'^api-token-auth/', views.obtain_auth_token),
+    url(r'^api/swagger/', schema_view),
     url('^api/inbox/notifications/', include(notifications.urls, namespace='notifications')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

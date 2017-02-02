@@ -13,3 +13,17 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
+
+
+class UserPostSerializer(serializers.ModelSerializer):
+    skill = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='name',
+        required=False)
+
+    class Meta:
+        model = User
+        fields = ('username', 'password',
+                  'skill', 'first_name',
+                  'last_name', 'email')
