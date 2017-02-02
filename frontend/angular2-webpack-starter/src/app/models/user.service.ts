@@ -20,12 +20,25 @@ export class UserService{
         }
 	}
 
+	getCookie(name) {
+	    let value = "; " + document.cookie;
+	    let parts = value.split("; " + name + "=");
+	    if (parts.length == 2) 
+	      return parts.pop().split(";").shift();
+	}
+
 	createNewUser(newUser: User): Observable<User>{
 		console.log('New User');
 		console.log(newUser);
+		let headers = new Headers({
+            'Content-Type': 'application/json',
+            'X-CSRFToken': this.getCookie('csrftoken')
+        });
+
+        let options = new RequestOptions({ headers: headers });
 		return this.http.post('/api/users', newUser, 
-							this.jwt())
-							.map((response: Response) => response.json());
-							// .catch((response: Response) => response.json());
+							options)
+							.map((response: Response) => response.json())
+							.catch((response: Response) => response.json());
 	}
 }
