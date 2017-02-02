@@ -5,6 +5,7 @@ import {
 import { UserService } from '../models/user.service';
 import { User } from '../models/user.model';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Response } from '@angular/http';
 
 @Component({
 	selector: 'registration-form',
@@ -52,10 +53,15 @@ export class RegistrationComponent implements OnInit{
     	this.buildRegistrationForm();
 	}
 
+	createNewUser(userData: any){
+		const result = this.userService.createNewUser(userData)
+										.subscribe((data: Response) => data.json());
+		console.log(result);
+	}
+
 	onSubmit(userForm: FormGroup){
 		this.userForRegistration = new User(userForm.value);
-		const result = this.userService.createNewUser(this.userForRegistration);
-		console.log(result);
+		const result = this.createNewUser(this.userForRegistration);
 	}
 
 	onValueChanged(data?: any) {

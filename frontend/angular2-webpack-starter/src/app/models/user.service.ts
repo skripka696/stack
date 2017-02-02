@@ -25,7 +25,7 @@ export class UserService{
 		console.log(newUser);
 		return this.http.post('/api/users', newUser, 
 							this.jwt())
-							.map((response: Response) => response.json())
-							.catch((response: Response) => response.json());
+							.map((response: Response) => response.json());
+							// .catch((response: Response) => response.json());
 	}
 }
