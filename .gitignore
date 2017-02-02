@@ -13,7 +13,6 @@ __pycache__/
 env/
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
@@ -22,6 +21,7 @@ lib64/
 parts/
 sdist/
 var/
+frontend/angular2-webpack-starter/node_modules/
 wheels/
 *.egg-info/
 .installed.cfg
