@@ -55,7 +55,10 @@ export class RegistrationComponent implements OnInit{
 
 	createNewUser(userData: any){
 		const result = this.userService.createNewUser(userData)
-										.subscribe((data: Response) => data.json());
+										.subscribe(
+											value => value,
+											error => error
+										);
 		console.log(result);
 	}
 
