@@ -8,6 +8,7 @@ import 'rxjs/add/operator/catch';
 @Injectable()
 export class UserService{
 	user: User;
+	serverName: string = 'http://stackoverflow.loc';
 
 	constructor(private http: Http){}
 
@@ -36,7 +37,7 @@ export class UserService{
         });
 
         let options = new RequestOptions({ headers: headers });
-		return this.http.post('/api/users', newUser, 
+		return this.http.post(`${this.serverName}/api/users`, newUser, 
 							options)
 							.map((response: Response) => response.json())
 							.catch((response: Response) => response.json());
