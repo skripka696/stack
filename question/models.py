@@ -12,6 +12,7 @@ class Question(models.Model):
     tag = models.ManyToManyField(Tag)
     title = models.CharField(max_length=255)
     content = models.TextField()
+    vote = models.IntegerField(default=0)
 
     def __str__(self):
         return '{}, {}'.format(self.user, self.title)
@@ -22,6 +23,7 @@ class Answer(models.Model):
     question = models.ForeignKey(Question)
     title = models.CharField(max_length=255)
     content = models.TextField()
+    vote = models.IntegerField(default=0)
 
     def __str__(self):
         return '{}, {}'.format(self.user, self.title)
@@ -40,6 +42,7 @@ class Comment(models.Model):
 
 
 class Vote(models.Model):
+    user = models.ForeignKey(User)
     rating = models.IntegerField()
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
@@ -49,5 +52,10 @@ class Vote(models.Model):
         return '{}'.format(self.rating)
 
 
-def count_vote(val):
-    pass
+# def count_vote(self, val, object_id):
+#     """ val -  """
+#     v = Vote.objects.get(object_id=object_id)
+#     rating = v.rating+val
+#     v.save()
+#
+#     return rating
