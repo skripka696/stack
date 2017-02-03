@@ -26,7 +26,9 @@ SECRET_KEY = '4dl!4jp-xs2(5-pm5byi-^$md$icsbw5bb@1yo0fs*3(%^9)jp'
 DEBUG = True
 
 ALLOWED_HOSTS = ['stackoverflow.loc',
-                 '127.0.0.1']
+                 '127.0.0.1',
+                 '127.16.205.3',
+                 ]
 
 
 # Application definition
@@ -45,10 +47,12 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'notifications',
     'rest_framework_swagger',
+    'corsheaders',
 
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -56,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsPostCsrfMiddleware'
 ]
 
 ROOT_URLCONF = 'stack.urls'
@@ -86,11 +91,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ],
 }
-
-
-
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
@@ -146,3 +149,7 @@ STATIC_ROOT = '{}/static/'.format(BASE_DIR)
 MEDIA_ROOT = '{}/media/'.format(BASE_DIR)
 
 AUTH_USER_MODEL = 'user_profile.User'
+# CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
+
+

@@ -15,14 +15,9 @@ class UserProfile(viewsets.ModelViewSet):
 
     def get_serializer(self, *args, **kwargs):
         serializers_map = {
-            'list': serializers.UserSerializer,
             'create': serializers.UserPostSerializer,
-            'retrieve': serializers.UserSerializer,
-            'update': serializers.UserSerializer,
-            'metadata': serializers.UserSerializer,
-            'destroy': serializers.UserSerializer,
-                    }
-        serializer_class = serializers_map[self.action]
+                            }
+        serializer_class = serializers_map.get(self.action, self.serializer_class)
         kwargs['context'] = self.get_serializer_context()
         return serializer_class(*args, **kwargs)
 
