@@ -8,7 +8,8 @@ import 'rxjs/add/operator/catch';
 @Injectable()
 export class UserService{
 	user: User;
-	serverName: string = 'http://stackoverflow.loc';
+	// serverName: string = 'http://172.16.205.7';
+	serverName: string = 'http://stack.overflow.loc';
 
 	constructor(private http: Http){}
 
@@ -29,17 +30,25 @@ export class UserService{
 	}
 
 	createNewUser(newUser: User): Observable<User>{
-		console.log('New User');
-		console.log(newUser);
 		let headers = new Headers({
             'Content-Type': 'application/json',
             'X-CSRFToken': this.getCookie('csrftoken')
         });
 
         let options = new RequestOptions({ headers: headers });
-		return this.http.post(`${this.serverName}/api/users`, newUser, 
-							options)
+		return this.http.post(`${this.serverName}/api/users/`, newUser, options)
 							.map((response: Response) => response.json())
 							.catch((response: Response) => response.json());
+	}
+
+	loginUser(user: User){
+		let headers = new Headers({
+            'Content-Type': 'application/json',
+            'X-CSRFToken': this.getCookie('csrftoken')
+        });
+		let options = new RequestOptions({ headers: headers });
+		return this.http.post(`${this.serverName}/api-token-auth/`, JSON.stringify(user), options)
+							 .map((response: Response) => response.json())
+							 .catch((response: Response) => response.json());
 	}
 }
