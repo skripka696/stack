@@ -23,6 +23,7 @@ export class RegistrationComponent implements OnInit{
 	password = new FormControl('', [Validators.required, Validators.minLength(8)]);
 	
 	registrationForm: FormGroup;
+	responseErrors?: any;
 
 	formErrors = {
 		'first_name': '',
@@ -57,7 +58,7 @@ export class RegistrationComponent implements OnInit{
 		const result = this.userService.createNewUser(userData)
 										.subscribe(
 											value => value,
-											error => error
+											error => this.responseErrors = error
 										);
 		console.log(result);
 	}

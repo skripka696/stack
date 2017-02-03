@@ -49,6 +49,6 @@ export class UserService{
 		let options = new RequestOptions({ headers: headers });
 		return this.http.post(`${this.serverName}/api-token-auth/`, JSON.stringify(user), options)
 							 .map((response: Response) => response.json())
-							 .catch((response: Response) => response.json());
+							 .catch((response: Response) => Observable.throw(response));
 	}
 }
