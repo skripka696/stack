@@ -24,7 +24,7 @@ export class UserService{
 	getCookie(name) {
 	    let value = "; " + document.cookie;
 	    let parts = value.split("; " + name + "=");
-	    if (parts.length == 2) 
+	    if (parts.length == 2)
 	      return parts.pop().split(";").shift();
 	}
 
@@ -37,7 +37,7 @@ export class UserService{
         });
 
         let options = new RequestOptions({ headers: headers });
-		return this.http.post(`${this.serverName}/api/users`, newUser, 
+		return this.http.post(`${this.serverName}/api/users/`, newUser,
 							options)
 							.map((response: Response) => response.json())
 							.catch((response: Response) => response.json());
