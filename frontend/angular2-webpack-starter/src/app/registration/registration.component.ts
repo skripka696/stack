@@ -23,7 +23,6 @@ export class RegistrationComponent implements OnInit{
 	password = new FormControl('', [Validators.required, Validators.minLength(8)]);
 	
 	registrationForm: FormGroup;
-	responseErrors?: any;
 
 	formErrors = {
 		'first_name': '',
@@ -55,12 +54,14 @@ export class RegistrationComponent implements OnInit{
 	}
 
 	createNewUser(userData: any){
-		const result = this.userService.createNewUser(userData)
+		let result = this.userService.createNewUser(userData)
 										.subscribe(
 											value => value,
-											error => this.responseErrors = error
+											error => {
+												console.log(error);
+												this.formErrors = error.json();
+											}
 										);
-		console.log(result);
 	}
 
 	onSubmit(userForm: FormGroup){
@@ -69,18 +70,13 @@ export class RegistrationComponent implements OnInit{
 	}
 
 	onValueChanged(data?: any) {
-		if (!this.registrationForm) { return; }
-		const form = this.registrationForm;
-	  	for (const field in this.formErrors) {
-	    	this.formErrors[field] = '';
-	    	const control = form.get(field);
-		    if (control && control.touched && !control.valid) {
-		        const messages = this.validationMessages[field];
-		    	for (const key in control.errors) {
-		        	this.formErrors[field] += messages[key] + ' ';
-		      	}
-		    }
-	  	}
+	 	this.formErrors = {
+			'first_name': '',
+			'last_name': '',
+			'email': '',
+			'username': '',
+			'password': ''
+		};
 	}
 
 	buildRegistrationForm(): void{

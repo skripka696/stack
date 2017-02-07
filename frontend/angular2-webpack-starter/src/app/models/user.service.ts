@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {User} from './user.model';
+import { Injectable } from '@angular/core';
+import { User } from './user.model';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -9,7 +9,7 @@ import 'rxjs/add/operator/catch';
 export class UserService{
 	user: User;
 	// serverName: string = 'http://172.16.205.7';
-	serverName: string = 'http://stack.overflow.loc';
+	serverName: string = 'http://stackoverflow.loc';
 
 	constructor(private http: Http){}
 
@@ -29,7 +29,7 @@ export class UserService{
 	      return parts.pop().split(";").shift();
 	}
 
-	createNewUser(newUser: User): Observable<User>{
+	createNewUser(newUser: User): Observable<Response>{
 		let headers = new Headers({
             'Content-Type': 'application/json',
             'X-CSRFToken': this.getCookie('csrftoken')
@@ -37,8 +37,7 @@ export class UserService{
 
         let options = new RequestOptions({ headers: headers });
 		return this.http.post(`${this.serverName}/api/users/`, newUser, options)
-							.map((response: Response) => response.json())
-							.catch((response: Response) => response.json());
+							.map((response: Response) => response);
 	}
 
 	loginUser(user: User){
@@ -48,7 +47,6 @@ export class UserService{
         });
 		let options = new RequestOptions({ headers: headers });
 		return this.http.post(`${this.serverName}/api-token-auth/`, JSON.stringify(user), options)
-							 .map((response: Response) => response.json())
-							 .catch((response: Response) => Observable.throw(response));
+							 .map((response: Response) => response.json());
 	}
 }

@@ -16,6 +16,9 @@
 				<p [hidden]="!email.errors.required">{{ validationMessages.email.required }}</p>
 				<p [hidden]="!email.errors.pattern">{{ validationMessages.email.pattern }}</p>
 			</div>
+			<div *ngIf="formErrors.email" class="alert alert-danger">
+				<p>{{ formErrors.email }}</p>
+			</div>
 		</div>
 		<div class="form-group" [ngClass]="{'has-error': username.touched && !username.valid}">
 			<label>Username:</label>
@@ -23,8 +26,8 @@
 			<div *ngIf="(!username.valid && username.touched)" class="alert alert-danger">
 				<p [hidden]="!username.errors.required">{{ validationMessages.username.required }}</p>
 			</div>
-			<div *ngIf="responseErrors.username" class="alert alert-danger">
-				<p>{{ responseErrors.username }}</p>
+			<div *ngIf="formErrors.username" class="alert alert-danger">
+				<p>{{ formErrors.username }}</p>
 			</div>
 		</div>
 		<div class="form-group" [ngClass]="{'has-error': password.touched && !password.valid}">
@@ -33,6 +36,9 @@
 			<div *ngIf="(!password.valid && password.touched)" class="alert alert-danger">
 				<p [hidden]="!password.errors.required">{{ validationMessages.password.required }}</p>
 				<p [hidden]="!password.errors.minlength">{{ validationMessages.password.minlength }}</p>
+			</div>
+			<div *ngIf="formErrors.password" class="alert alert-danger">
+				<p>{{ formErrors.password }}</p>
 			</div>
 		</div>
 		<button class="btn btn-primary pull-right" (click)="onSubmit(registrationForm);" [disabled]="!registrationForm.valid">Submit</button>
