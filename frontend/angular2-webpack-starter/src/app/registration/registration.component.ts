@@ -1,20 +1,29 @@
 import {
   Component,
   OnInit,
+  ViewContainerRef,
+  ViewChild
 } from '@angular/core';
 import { UserService } from '../models/user.service';
 import { User } from '../models/user.model';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { 
+	FormBuilder, 
+	FormControl, 
+	FormGroup,
+	Validators 
+} from '@angular/forms';
 import { Response } from '@angular/http';
+import { ModalDialogDirective } from '../modals/modal.dialog.component';
 
 @Component({
 	selector: 'registration-form',
 	styleUrls: ['./registration.style.css'], 
 	templateUrl: './registration.component.html',
-	providers: [UserService]
+	providers: [ UserService ]
 })
 export class RegistrationComponent implements OnInit{
 	userForRegistration?: User;
+	@ViewChild(ModalDialogDirective) modalDialog:ModalDialogDirective;
 
 	first_name = new FormControl('');
 	last_name = new FormControl('');
@@ -51,12 +60,20 @@ export class RegistrationComponent implements OnInit{
 
 	public ngOnInit(){
     	this.buildRegistrationForm();
+	}	
+
+	showModalDialog(){
+		let successMessage = 'Please check your email for complete your registration';
+		this.modalDialog.openModal(successMessage);
 	}
 
 	createNewUser(userData: any){
 		let result = this.userService.createNewUser(userData)
 										.subscribe(
-											value => value,
+											value => { 
+												console.log(value);
+												this.showModalDialog();
+											},
 											error => {
 												console.log(error);
 												this.formErrors = error.json();
@@ -92,5 +109,5 @@ export class RegistrationComponent implements OnInit{
       		.subscribe(data => this.onValueChanged(data));
 
   		this.onValueChanged();
-	}
+	}	
 }
