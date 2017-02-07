@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
+
 from user_profile.models import User
 
 
@@ -22,6 +24,10 @@ class UserPostSerializer(serializers.ModelSerializer):
         slug_field='name',
         required=False)
 
+    email = serializers.EmailField(validators=
+                                   [UniqueValidator(queryset=User.objects.all(),
+                                                    message='A user with that email already exists')])
+
     class Meta:
         model = User
         fields = ('username', 'password',
@@ -36,3 +42,10 @@ class UserPostSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+    def validate_password(self, value):
+        if not value:
+            raise serializers.ValidationError("Password cannot be empty!")
+        elif len(value) < 8:
+            raise serializers.ValidationError("Password should be > 8")
+        return value
