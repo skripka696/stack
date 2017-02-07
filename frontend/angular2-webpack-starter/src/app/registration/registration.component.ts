@@ -13,7 +13,7 @@ import {
 	Validators 
 } from '@angular/forms';
 import { Response } from '@angular/http';
-import { ModalDialogDirective } from '../modals/modal.dialog.component';
+import { ModalDialogDirective } from '../modals/modal.dialog.directive';
 
 @Component({
 	selector: 'registration-form',
@@ -23,7 +23,7 @@ import { ModalDialogDirective } from '../modals/modal.dialog.component';
 })
 export class RegistrationComponent implements OnInit{
 	userForRegistration?: User;
-	@ViewChild(ModalDialogDirective) modalDialog:ModalDialogDirective;
+	@ViewChild(ModalDialogDirective) modalDialog: ModalDialogDirective;
 
 	first_name = new FormControl('');
 	last_name = new FormControl('');
