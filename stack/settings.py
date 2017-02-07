@@ -28,8 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = ['stackoverflow.loc',
                  '127.0.0.1',
                  '127.16.205.3',
+                 '127.16.205.7',
                  ]
-
 
 # Application definition
 
@@ -85,9 +85,9 @@ WSGI_APPLICATION = 'stack.wsgi.application'
 
 REST_FRAMEWORK = {
 
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ],
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    # ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
