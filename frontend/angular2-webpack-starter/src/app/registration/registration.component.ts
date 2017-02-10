@@ -1,11 +1,11 @@
 import {
   Component,
   OnInit,
-  ViewContainerRef,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { UserService } from '../models/user.service';
 import { User } from '../models/user.model';
+
 import { 
 	FormBuilder, 
 	FormControl, 
@@ -13,7 +13,8 @@ import {
 	Validators 
 } from '@angular/forms';
 import { Response } from '@angular/http';
-import { ModalDialogDirective } from '../modals/modal.dialog.directive';
+import { ModalDialogContent } from '../modals';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'registration-form',
@@ -23,7 +24,6 @@ import { ModalDialogDirective } from '../modals/modal.dialog.directive';
 })
 export class RegistrationComponent implements OnInit{
 	userForRegistration?: User;
-	@ViewChild(ModalDialogDirective) modalDialog: ModalDialogDirective;
 
 	first_name = new FormControl('');
 	last_name = new FormControl('');
@@ -56,15 +56,21 @@ export class RegistrationComponent implements OnInit{
 	};
 
 	constructor(private formBuilder: FormBuilder, 
-				private userService: UserService){}
+				private userService: UserService,
+				private modalService: NgbModal){
+	}
 
 	public ngOnInit(){
     	this.buildRegistrationForm();
 	}	
 
 	showModalDialog(){
-		let successMessage = 'Please check your email for complete your registration';
-		this.modalDialog.openModal(successMessage);
+		let redirectAfterRegistration = ['/login'];
+		let content = 'Please go to your email for confirm account and try to login.';
+		const modalRef = this.modalService.open(ModalDialogContent, { windowClass: 'in modal' });
+		console.log(modalRef);
+		modalRef.componentInstance.routedLink = redirectAfterRegistration;
+		modalRef.componentInstance.body = content;
 	}
 
 	createNewUser(userData: any){
@@ -109,5 +115,5 @@ export class RegistrationComponent implements OnInit{
       		.subscribe(data => this.onValueChanged(data));
 
   		this.onValueChanged();
-	}	
+	}
 }

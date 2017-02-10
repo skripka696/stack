@@ -2,8 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-import { ModalModule } from 'angular2-modal';
-import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import {
   NgModule,
@@ -30,7 +29,7 @@ import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState, InternalStateType } from './app.service';
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
-import { ModalDialogDirective } from './modals';
+import { ModalDialogContent } from './modals';
 import { RegistrationComponent } from './registration';
 import { NoContentComponent } from './no-content';
 import { XLargeDirective } from './home/x-large';
@@ -61,17 +60,17 @@ type StoreType = {
     LoginComponent,
     RegistrationComponent,
     NoContentComponent,
-    ModalDialogDirective,
+    ModalDialogContent,
     XLargeDirective
   ],
   imports: [ // import Angular's modules
     BrowserModule,
     ReactiveFormsModule,
     HttpModule,
-    ModalModule.forRoot(),
-    BootstrapModalModule,
+    NgbModule.forRoot(),
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules })
   ],
+  entryComponents: [ModalDialogContent],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
     APP_PROVIDERS,
