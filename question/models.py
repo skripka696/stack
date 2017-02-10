@@ -40,6 +40,12 @@ class Comment(models.Model):
 
 
 class Vote(models.Model):
+    ACTIVITY_CHOICES = (
+        ('U', 'up'),
+        ('D', 'down'),
+        ('N', 'null'),
+    )
+    choice = models.CharField(max_length=5, choices=ACTIVITY_CHOICES, default='N')
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     rating = models.IntegerField()
     content_type = models.ForeignKey(ContentType)
