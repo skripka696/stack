@@ -8,8 +8,8 @@ import 'rxjs/add/operator/catch';
 @Injectable()
 export class UserService{
 	user: User;
-	serverName: string = 'http://172.16.205.7';
-	// serverName: string = 'http://stackoverflow.loc';
+	// serverName: string = 'http://172.16.205.7';
+	serverName: string = 'http://stackoverflow.loc';
 
 	constructor(private http: Http){}
 
