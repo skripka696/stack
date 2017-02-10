@@ -1,0 +1,36 @@
+<nav class="navbar navbar-light">       
+  <div class="container">
+    <ul class="nav nav-inline">
+      <li class="nav-item">
+        <a [routerLink]=" ['./home'] " routerLinkActive="active" class="nav-link">
+          Home
+        </a>
+      </li>
+      <li class="nav-item">
+        <a [routerLink]=" ['./login'] " routerLinkActive="active" class="nav-link">
+          Login
+        </a>     
+      </li>
+      <li class="nav-item">
+        <a [routerLink]=" ['./registration'] " routerLinkActive="active" class="nav-link">
+          Registration
+        </a> 
+      </li>
+    </ul>
+  </div>
+</nav>
+<section id="service-block-main" class="section">
+  <div class="container">
+    <div class="row">   
+      <router-outlet></router-outlet>        
+    </div>
+  </div>
+</section>
+
+<div id="copyright">
+  <div class="container">
+    <div class="row">
+        <p class="copyright-text">@OurStackoverflow 2017</p>
+    </div>
+  </div>
+</div>

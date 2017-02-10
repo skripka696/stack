@@ -17,6 +17,6 @@
 				<p [hidden]="(!password.errors.minlength)">{{ validationMessages.password.minlength }}</p>
 			</div>
 		</div>
-		<button type="submit" class="pull-right btn btn-primary" (click)="onSubmit(loginForm);" [disabled]="!loginForm.valid">Submit</button>
+		<button type="submit" class="pull-right btn btn-outline btn-md" (click)="onSubmit(loginForm);" [disabled]="!loginForm.valid">Submit</button>
 	</form>
 </div>

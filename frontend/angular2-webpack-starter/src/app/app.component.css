@@ -1,4 +1,4 @@
-a.active {
+/*a.active {
   background-color: gray;
 }
 
@@ -19,4 +19,16 @@ body {
 	width: auto;
     max-width: 800px;
     padding: 0 15px;
+}*/
+login-form,
+registration-form{
+    width: 100%;
+}
+
+.alert p{
+    margin: 0;
+}
+
+.btn{
+    background-color: #fff;
 }
