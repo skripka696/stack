@@ -18,31 +18,7 @@ import { AppState } from './app.service';
   styleUrls: [
     './app.component.css'
   ],
-  template: `    
-    <div class="container">
-      <nav>       
-        <a [routerLink]=" ['./home'] " routerLinkActive="active">
-          Home
-        </a>
-        <a [routerLink]=" ['./login'] " routerLinkActive="active">
-          Login
-        </a>     
-        <a [routerLink]=" ['./registration'] " routerLinkActive="active">
-          Registration
-        </a> 
-      </nav>
-
-      <main>
-        <router-outlet></router-outlet>        
-      </main>
-    </div>
-
-    <footer class="footer">
-      <div class="container">
-        <p>@OurStackoverflow 2017</p>
-      </div>
-    </footer>
-  `
+  templateUrl: './app.component.template.html' 
 })
 export class AppComponent implements OnInit {
   public angularclassLogo = 'assets/img/angularclass-avatar.png';
