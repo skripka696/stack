@@ -1,1 +1,1 @@
-export * from './modal.dialog.directive';
+export * from './modal.dialog.component';

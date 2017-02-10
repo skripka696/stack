@@ -18,7 +18,7 @@ import { AppState } from './app.service';
   styleUrls: [
     './app.component.css'
   ],
-  template: `
+  template: `    
     <div class="container">
       <nav>       
         <a [routerLink]=" ['./home'] " routerLinkActive="active">
@@ -33,7 +33,7 @@ import { AppState } from './app.service';
       </nav>
 
       <main>
-        <router-outlet></router-outlet>
+        <router-outlet></router-outlet>        
       </main>
     </div>
 
