@@ -31,6 +31,7 @@ import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { ModalDialogContent } from './modals';
 import { RegistrationComponent } from './registration';
+import { QuestionsComponent, QuestionDetailComponent } from './questions';
 import { NoContentComponent } from './no-content';
 import { XLargeDirective } from './home/x-large';
 
@@ -61,6 +62,8 @@ type StoreType = {
     RegistrationComponent,
     NoContentComponent,
     ModalDialogContent,
+    QuestionsComponent,
+    QuestionDetailComponent,
     XLargeDirective
   ],
   imports: [ // import Angular's modules

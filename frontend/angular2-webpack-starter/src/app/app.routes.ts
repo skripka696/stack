@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
+import { QuestionsComponent, QuestionDetailComponent } from './questions';
 import { RegistrationComponent } from './registration';
 import { NoContentComponent } from './no-content';
 
@@ -10,6 +11,8 @@ export const ROUTES: Routes = [
   { path: '',      component: HomeComponent },
   { path: 'home',  component: HomeComponent },
   { path: 'login',  component: LoginComponent },
+  { path: 'question',  component: QuestionsComponent },
+  { path: 'question/:id',  component: QuestionDetailComponent },
   { path: 'registration',  component: RegistrationComponent },
   { path: '**',    component: NoContentComponent },
 ];

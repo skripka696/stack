@@ -11,7 +11,7 @@ export class UserService extends CommonService{
 	user: User;
     options: RequestOptions;
 
-	constructor(){
+	constructor(private http: Http){
 		super();
 		this.options 
 	}	

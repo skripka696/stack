@@ -6,10 +6,8 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class CommonService{
-	// serverName: string = 'http://172.16.205.7';
-	serverName: string = 'http://stackoverflow.loc';
-	public http: Http;
-
+	serverName: string = 'http://172.16.205.7';
+	// serverName: string = 'http://stackoverflow.loc';
 	constructor(){}
 
 	public jwt(): RequestOptions{

@@ -10,10 +10,7 @@ import 'rxjs/add/operator/catch';
 export class QuestionService extends CommonService{
 	question: Question;
 
-	// serverName: string = 'http://172.16.205.7';
-	serverName: string = 'http://stackoverflow.loc';
-
-	constructor(){
+	constructor(private http: Http){
 		super();
 	}
 
@@ -21,6 +18,12 @@ export class QuestionService extends CommonService{
 		let options = new RequestOptions({ headers: this.getCSRFToken() });
 		return this.http.get(`${this.serverName}/api/question/`, options)
 						.map((response: Response) => response.json());
+	}
+
+	getQuestionByID(questionId: number): Observable<Response>{
+		let options = new RequestOptions({ headers: this.getCSRFToken() });
+		return this.http.get(`${this.serverName}/api/question/${questionId}/`, options)
+						.map((response: Response) => response.json());	
 	}
 
 }
