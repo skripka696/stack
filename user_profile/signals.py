@@ -1,11 +1,21 @@
 from django.db.models.signals import post_save
-from notifications.signals import notify
+from django.dispatch import receiver
+from question.models import Question, Answer
 from user_profile.models import User
 
 
-def my_handler(sender, instance, created, **kwargs):
-    notify.send(instance, verb='was saved')
-
-post_save.connect(my_handler, sender=User)
-
+@receiver(post_save, sender=Question)
+@receiver(post_save, sender=Answer)
+@receiver(post_save, sender=User)
+def count_rating(instance, created, **kwargs):
+    if created:
+        if User == instance.__class__:
+            instance.rating += 10
+            instance.save()
+        else:
+            if Question == instance.__class__:
+                instance.user.rating += 20
+            elif Answer == instance.__class__:
+                instance.user.rating += 10
+            instance.user.save()
 
