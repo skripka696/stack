@@ -8,4 +8,4 @@ class Tag(models.Model):
     description = models.TextField()
 
     def __str__(self):
-        return '{}'.format(self.name)
+        return self.name

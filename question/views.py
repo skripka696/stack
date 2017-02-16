@@ -6,6 +6,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.contenttypes.models import ContentType
 from datetime import datetime, timezone
+from django.utils import timezone
+from stack import settings
 
 
 class QuestonView(viewsets.ModelViewSet):
@@ -15,6 +17,7 @@ class QuestonView(viewsets.ModelViewSet):
     """
     queryset = Question.objects.all()
     serializer_class = serializers.QuestionSerializer
+    lookup_field = 'slug'
 
     def get_serializer(self, *args, **kwargs):
         serializers_map = {
@@ -52,15 +55,18 @@ class VoteView(viewsets.ModelViewSet):
     serializer_class = serializers.VoteSerializer
 
     def create(self, request, *args, **kwargs):
-        self.check_expired_for_voting(request, 730, 'EXPIRED FOR VOTING')
+        self.check_expired_for_voting(request, settings.ANSWER_TIMEOUT,
+                                      'EXPIRED FOR VOTING')
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(serializer.data, status=status.HTTP_201_CREATED,
+                        headers=headers)
 
     def update(self, request, *args, **kwargs):
-        self.check_expired_for_voting(request, 3, 'EXPIRED FOR UPDATE VOTING')
+        self.check_expired_for_voting(request, settings.ANSWER_UPDATE,
+                                      'EXPIRED FOR UPDATE VOTING')
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
@@ -78,14 +84,17 @@ class VoteView(viewsets.ModelViewSet):
     def check_expired_for_voting(self, request, hour_expire, message):
         change_model = ContentType.objects.get(id=request.data['content_type'])
         data = change_model.model_class().objects.get(id=request.data['object_id']).create_date
-        diff_date = datetime.now(timezone.utc) - data
+        diff_date = timezone.now() - data
         if diff_date.seconds > hour_expire*3600:
-            return Response({'error': '{}'.format(message)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': '{}'.format(message)},
+                            status=status.HTTP_400_BAD_REQUEST)
 
     def check_of_correct_vote(self, request):
         vote = Vote.objects.get(user=request.data['user'])
+
         if request.data['choice'] == vote.choice:
-            return Response({'error': 'You can only change your vote'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'You can only change your vote'},
+                            status=status.HTTP_400_BAD_REQUEST)
         # if vote.choice == 'U' and request.data['choice'] == 'D' \
         #         or vote.choice == 'D' and request.data['choice'] == 'U':
         #     request.data['zeroing'] = True

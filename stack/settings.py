@@ -145,8 +145,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
-STATIC_ROOT = '{}/static/'.format(BASE_DIR)
-MEDIA_ROOT = '{}/media/'.format(BASE_DIR)
+ANSWER_TIMEOUT = 30*24
+ANSWER_UPDATE = 3
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'user_profile.User'
 # CORS_ALLOW_CREDENTIALS = True
