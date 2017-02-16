@@ -23,7 +23,8 @@ body {
 home,
 login-form,
 registration-form,
-all-questions{
+all-questions,
+question-detail{
     width: 100%;
 }
 

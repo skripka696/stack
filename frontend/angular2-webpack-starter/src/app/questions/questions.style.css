@@ -14,6 +14,7 @@ div.statistics{
 	width: 24%;
 	display: inline-block;
 	vertical-align: top;
+    word-break: break-all;
 }
 
 div.additional-data > div{
@@ -40,3 +41,8 @@ div.statistics > div:nth-last-child(1){
 .votes{
 	text-align: center;
 }
+
+a.sup-title h4{
+	word-break: normal;
+}
+

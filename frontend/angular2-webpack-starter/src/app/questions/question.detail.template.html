@@ -1,1 +1,15 @@
-<h1>Question Detail</h1>
+<div *ngIf="question" id="question">
+	<div>
+		<h2 class="title">{{ question.title }}</h2>
+		<div id="content">
+			<div id="votes">
+				<i class="fa fa-3x fa-caret-up" (click)="sendVote('up');" ></i>
+				<h3><span>{{ question.vote }}</span></h3>
+				<i class="fa fa-3x fa-caret-down" (click)="sendVote('down');"></i>
+			</div>
+			<div class="question">
+				<h5>{{ question.content }}</h5>
+			</div>
+		</div>
+	</div>
+</div>

@@ -32,11 +32,7 @@ export class QuestionsComponent implements OnInit{
 								}
 						 	);
 	 	console.log(questions_tmp);
- 	}
-
- 	onSelect(question: Question){
- 		this.router.navigate(['/question', question.id]);
- 	}
+ 	} 	
 
 	public ngOnInit(){
 		this.loadAllQuestions();

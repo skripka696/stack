@@ -1,5 +1,5 @@
 <div>
-	<div class="question" *ngFor="let question of allQuestions" (click)="onSelect(question);">
+	<div class="question" *ngFor="let question of allQuestions">
 		<div class="statistics">
 			<div class="votes fact-count">
 				<h5>
@@ -22,12 +22,16 @@
 		</div>
 		<div class="question-content">
 			<div>
-	        	<a class="sup-title" href="#"><h4>{{ question.title }}</h4></a>
+	        	<a class="sup-title" [routerLink]="['/question', question.slug]">
+	        		<h4>{{ question.title }}</h4>
+        		</a>
         	</div>
         	<div class="additional-data">
 		        <div class="widget tag-cloud">
 			        <ul>
-			        	<li *ngFor="let tag of question.tag" ><a href="#">{{ tag }}</a></li>
+			        	<li *ngFor="let tag of question.tag" >
+			        		<a [routerLink]="['/question', question.id]">{{ tag }}</a>
+		        		</li>
 			        </ul>
 		        </div>
 		        <div>

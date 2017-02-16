@@ -20,10 +20,27 @@ export class QuestionService extends CommonService{
 						.map((response: Response) => response.json());
 	}
 
-	getQuestionByID(questionId: number): Observable<Response>{
+	getQuestionBySlug(questionSlug: string): Observable<Response>{
 		let options = new RequestOptions({ headers: this.getCSRFToken() });
-		return this.http.get(`${this.serverName}/api/question/${questionId}/`, options)
+		return this.http.get(`${this.serverName}/api/question/${questionSlug}/`, options)
 						.map((response: Response) => response.json());	
 	}
 
+	getQuestionsByTag(questionTag: string): Array<Question>{
+		return [];
+	}
+
+	sendVote(objectType: string, questionId: number, choice: string){
+		let options = this.jwt();
+		let data = {
+			'content_type': objectType,
+			'object_id': questionId,
+			'choice': choice == 'up' && 'U' || 'D',
+			'rating': 1
+		}
+		console.log(data);
+		console.log(this.http);
+		return this.http.post(`${this.serverName}/api/vote/`, data, options)
+						.map((response: Response) => response.json());
+	}
 }
