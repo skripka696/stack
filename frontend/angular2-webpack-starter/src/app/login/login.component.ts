@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit{
 	onSubmit(form: any){
 		this.userService.loginUser(form.value)
 						.subscribe(
-							value => localStorage.setItem('currentUser', value['token']),
+							value => localStorage.setItem('currentUser', JSON.stringify({'token': value['token']})),
 							error => console.log(error)
 						);
 	}

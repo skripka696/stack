@@ -1,0 +1,43 @@
+<div>
+	<div class="question" *ngFor="let question of allQuestions">
+		<div class="statistics">
+			<div class="votes fact-count">
+				<h5>
+					<span class="counter">{{ question.vote }}</span>
+				</h5>
+				<h6>votes</h6>
+			</div>
+			<div class="views">
+				<h5>
+					<span class="counter">0</span>
+				</h5>
+				<h6>views</h6>
+			</div>
+			<div class="answers">
+				<h5>
+					<span class="counter">0</span>
+				</h5>
+				<h6>answers</h6>
+			</div>
+		</div>
+		<div class="question-content">
+			<div>
+	        	<a class="sup-title" [routerLink]="['/question', question.slug]">
+	        		<h4>{{ question.title }}</h4>
+        		</a>
+        	</div>
+        	<div class="additional-data">
+		        <div class="widget tag-cloud">
+			        <ul>
+			        	<li *ngFor="let tag of question.tag" >
+			        		<a [routerLink]="['/question', question.id]">{{ tag }}</a>
+		        		</li>
+			        </ul>
+		        </div>
+		        <div>
+		        	<p class="sup-description pull-right">{{ question.user }}</p>
+	        	</div>
+        	</div>
+        </div>
+	</div>
+</div>

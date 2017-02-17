@@ -20,8 +20,11 @@ body {
     max-width: 800px;
     padding: 0 15px;
 }*/
+home,
 login-form,
-registration-form{
+registration-form,
+all-questions,
+question-detail{
     width: 100%;
 }
 

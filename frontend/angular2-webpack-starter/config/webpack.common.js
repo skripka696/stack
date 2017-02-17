@@ -89,7 +89,15 @@ module.exports = function (options) {
      * See: http://webpack.github.io/docs/configuration.html#module
      */
     module: {
-
+      loaders: [
+          {test: /\.css$/, loader:   ['style-loader', 'css-loader']},
+          {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
+          {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream" },
+          {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file" },
+          {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml" },
+          {test: /\.html$/, loader: 'raw',exclude: /node_modules/},
+          {test   : /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9=&.]+)?$/,loader : 'file-loader'},
+      ],
       rules: [
 
         /*
@@ -179,12 +187,20 @@ module.exports = function (options) {
           exclude: [helpers.root('src/index.html')]
         },
 
-        /* File loader for supporting images, for example, in CSS files.
+        /* 
+         * File loader for supporting images, for example, in CSS files.
          */
         {
           test: /\.(jpg|png|gif)$/,
           use: 'file-loader'
         },
+
+        /* File loader for supporting fonts, for example, in CSS files.
+        */
+        { 
+          test: /\.(eot|woff2?|svg|ttf)([\?]?.*)$/,
+          use: 'file-loader'
+        }
 
       ],
 

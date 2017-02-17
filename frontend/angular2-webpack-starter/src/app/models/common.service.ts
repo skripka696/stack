@@ -6,17 +6,15 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class CommonService{
-	// serverName: string = 'http://172.16.205.7';
-	serverName: string = 'http://stackoverflow.loc';
-	public http: Http;
-
+	serverName: string = 'http://172.16.205.7';
+	// serverName: string = 'http://stackoverflow.loc';
 	constructor(){}
 
 	public jwt(): RequestOptions{
 		// create authorization header with jwt token
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (currentUser && currentUser.token) {
-            let headers = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
+            let headers = new Headers({ 'Authorization': 'Token ' + currentUser.token });
             return new RequestOptions({ headers: headers });
         }
 	}
