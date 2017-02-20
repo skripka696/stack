@@ -146,7 +146,7 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
 ANSWER_TIMEOUT = 30*24
-ANSWER_UPDATE = 3
+ANSWER_UPDATE = 3*24
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

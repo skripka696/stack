@@ -4,7 +4,7 @@ from django.conf import settings
 from tag.models import Tag
 from user_profile.models import User
 from django.contrib.auth import get_user_model
-
+from django.utils import timezone
 
 class AnswerSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(
@@ -45,9 +45,7 @@ class QuestionSerializer(serializers.ModelSerializer):
         }
 
 
-
-
-class QuestionPostSerializer(serializers.ModelSerializer):
+class QuestionPostSerializer(QuestionSerializer):
     user = serializers.SlugRelatedField(
         queryset=User.objects.all(),
         slug_field="username")
@@ -81,8 +79,28 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class VoteSerializer(serializers.ModelSerializer):
 
-
-
     class Meta:
         model = Vote
-        fields = '__all__'
+        fields = ('id', 'choice', 'rating', 'object_id', 'user', 'content_type', 'updated_at')
+
+    def validate(self, attrs):
+        if self._context['view'].action == 'create':
+            change_model = attrs['content_type'].model_class()
+            data = change_model.objects.get(
+                id=attrs['object_id']).create_date
+            diff_date = timezone.now() - data
+            if diff_date.seconds > settings.ANSWER_TIMEOUT*3600:
+                raise serializers.ValidationError(
+                    'EXPIRED FOR VOTING')
+        if self._context['view'].action == 'update':
+            # diff_date = timezone.now() - attrs['updated_at']
+            # if diff_date.seconds > settings.ANSWER_UPDATE:
+            if 20*60 > settings.ANSWER_UPDATE*3600:
+                raise serializers.ValidationError(
+                    'EXPIRED FOR UPDATE VOTING')
+        return attrs
+
+    def save(self, **kwargs):
+        if self.context['request'].data.get('type') == 'N':
+            self.validated_data['choice'] = 'N'
+        super(VoteSerializer, self).save(**kwargs)

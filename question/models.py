@@ -50,6 +50,7 @@ class Vote(models.Model):
         ('N', 'null'),
     )
     choice = models.CharField(max_length=5, choices=ACTIVITY_CHOICES, default='N')
+    updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     rating = models.IntegerField()
     content_type = models.ForeignKey(ContentType)
@@ -57,6 +58,6 @@ class Vote(models.Model):
     content_object = GenericForeignKey('content_type', 'object_id')
 
     def __str__(self):
-        return 'rating - {}, user - {}, choice - {}'.format(self.rating, self.user, self.choice)
+        return 'id-{}, rating - {}, user - {}, choice - {}'.format(self.id, self.rating, self.user, self.choice)
 
 
