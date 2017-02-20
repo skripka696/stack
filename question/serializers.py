@@ -85,6 +85,7 @@ class VoteSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         if self._context['view'].action == 'create':
+            self.check_user_rating(attrs)
             change_model = attrs['content_type'].model_class()
             data = change_model.objects.get(
                 id=attrs['object_id']).create_date
@@ -99,6 +100,11 @@ class VoteSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError(
                     'EXPIRED FOR UPDATE VOTING')
         return attrs
+
+    def check_user_rating(self, data):
+        if data['user'].rating < 50:
+            raise serializers.ValidationError(
+                'For this action, the rating should be greater than 50 ')
 
     def save(self, **kwargs):
         if self.context['request'].data.get('type') == 'N':
