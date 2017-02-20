@@ -87,12 +87,13 @@ class VoteSerializer(serializers.ModelSerializer):
         if self._context['view'].action == 'create':
             self.check_user_rating(attrs)
             change_model = attrs['content_type'].model_class()
-            data = change_model.objects.get(
-                id=attrs['object_id']).create_date
-            diff_date = timezone.now() - data
-            if diff_date.seconds > settings.ANSWER_TIMEOUT*3600:
-                raise serializers.ValidationError(
-                    'EXPIRED FOR VOTING')
+            if change_model == Question:
+                data = change_model.objects.get(
+                    id=attrs['object_id']).create_date
+                diff_date = timezone.now() - data
+                if diff_date.seconds > settings.ANSWER_TIMEOUT*3600:
+                    raise serializers.ValidationError(
+                        'EXPIRED FOR VOTING')
         if self._context['view'].action == 'update':
             # diff_date = timezone.now() - attrs['updated_at']
             # if diff_date.seconds > settings.ANSWER_UPDATE:
