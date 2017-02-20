@@ -3,7 +3,6 @@ from question.models import Question, Answer, Comment, Vote
 from django.conf import settings
 from tag.models import Tag
 from user_profile.models import User
-from django.contrib.auth import get_user_model
 from django.utils import timezone
 
 class AnswerSerializer(serializers.ModelSerializer):
