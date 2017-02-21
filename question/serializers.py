@@ -5,6 +5,13 @@ from tag.models import Tag
 from user_profile.models import User
 from django.utils import timezone
 
+
+class CommentRelatedField(serializers.RelatedField):
+    def to_representation(self, value):
+        serializer = CommentSerializer(value.get_queryset()[0])
+        return serializer.data
+
+
 class AnswerSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(
         read_only=True,
@@ -22,6 +29,23 @@ class AnswerSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CommentSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field="username",
+        required=False)
+
+    content_object = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field="title",
+        required=False
+    )
+
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+
 class QuestionSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(
          read_only=True,
@@ -34,10 +58,12 @@ class QuestionSerializer(serializers.ModelSerializer):
         slug_field='name',
         required=False)
     answers = AnswerSerializer(required=False, many=True)
+    comment = CommentRelatedField(read_only=True)
 
     class Meta:
         model = Question
-        fields = ('id', 'user', 'tag', 'create_date', 'title', 'content', 'vote', 'answers', 'slug')
+        fields = ('id', 'user', 'tag', 'create_date', 'title', 'content',
+                  'vote', 'answers', 'comment', 'slug')
         lookup_field = 'slug'
         extra_kwargs = {
             'url': {'lookup_field': 'slug'}
@@ -57,23 +83,6 @@ class QuestionPostSerializer(QuestionSerializer):
     class Meta:
         model = Question
         fields = ('id', 'user', 'tag', 'title', 'content')
-
-
-class CommentSerializer(serializers.ModelSerializer):
-    user = serializers.SlugRelatedField(
-        read_only=True,
-        slug_field="username",
-        required=False)
-
-    content_object = serializers.SlugRelatedField(
-        read_only=True,
-        slug_field="title",
-        required=False
-    )
-
-    class Meta:
-        model = Comment
-        fields = '__all__'
 
 
 class VoteSerializer(serializers.ModelSerializer):
