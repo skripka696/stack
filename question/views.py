@@ -5,7 +5,7 @@ from rest_framework.exceptions import APIException
 from question.models import Question, Answer, Comment, Vote
 from question import serializers
 from django.contrib.contenttypes.models import ContentType
-from user_profile.permissions import IsUser, IsModerator, IsSuperuser, IsHaveAccess
+from user_profile.permissions import IsHaveAccess
 
 
 class MixedPermission(object):
@@ -62,14 +62,12 @@ class CommentView(MixedPermissionAction, viewsets.ModelViewSet):
     serializer_class = serializers.CommentSerializer
 
 
-
 class VoteView(MixedPermissionAction, viewsets.ModelViewSet):
     """
     Returns a list of views.
     """
     queryset = Vote.objects.all()
     serializer_class = serializers.VoteSerializer
-
 
     def update(self, request, *args, **kwargs):
         self.check_of_correct_vote(request)
