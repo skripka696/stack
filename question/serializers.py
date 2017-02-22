@@ -1,32 +1,11 @@
 from rest_framework import serializers
+from rest_framework.fields import SerializerMethodField
+
 from question.models import Question, Answer, Comment, Vote
 from django.conf import settings
 from tag.models import Tag
 from user_profile.models import User
 from django.utils import timezone
-
-
-class CommentRelatedField(serializers.RelatedField):
-    def to_representation(self, value):
-        serializer = CommentSerializer(value.get_queryset()[0])
-        return serializer.data
-
-
-class AnswerSerializer(serializers.ModelSerializer):
-    user = serializers.SlugRelatedField(
-        read_only=True,
-        slug_field="username",
-        required=False)
-
-    question = serializers.SlugRelatedField(
-         read_only=True,
-         slug_field="title",
-         required=False
-    )
-
-    class Meta:
-        model = Answer
-        fields = '__all__'
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -46,6 +25,25 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class AnswerSerializer(serializers.ModelSerializer):
+    # user = serializers.SlugRelatedField(
+    #     read_only=True,
+    #     slug_field="username",
+    #     required=False)
+
+    question = serializers.SlugRelatedField(
+         read_only=True,
+         slug_field="title",
+         required=False
+    )
+
+    comment = CommentSerializer(many=True)
+
+    class Meta:
+        model = Answer
+        fields = '__all__'
+
+
 class QuestionSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(
          read_only=True,
@@ -57,12 +55,12 @@ class QuestionSerializer(serializers.ModelSerializer):
         read_only=True,
         slug_field='name',
         required=False)
-    answers = AnswerSerializer(required=False, many=True)
-    comment = CommentRelatedField(read_only=True)
+    answers = AnswerSerializer(required=False, many=True, read_only=True)
+    comment = CommentSerializer(many=True, read_only=True)
 
     class Meta:
         model = Question
-        fields = ('id', 'user', 'tag', 'create_date', 'title', 'content',
+        fields = ('id', 'tag', 'user', 'create_date', 'title', 'content',
                   'vote', 'answers', 'comment', 'slug')
         lookup_field = 'slug'
         extra_kwargs = {
@@ -79,6 +77,11 @@ class QuestionPostSerializer(QuestionSerializer):
         queryset=Tag.objects.all(),
         many=True,
         slug_field='name')
+
+    comment = serializers.SlugRelatedField(
+        queryset=Comment.objects.all(),
+        many=True,
+        slug_field='description')
 
     class Meta:
         model = Question

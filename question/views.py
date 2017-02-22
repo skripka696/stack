@@ -1,12 +1,31 @@
+from rest_framework import permissions
 from rest_framework import viewsets
 from rest_framework.exceptions import APIException
 
 from question.models import Question, Answer, Comment, Vote
 from question import serializers
 from django.contrib.contenttypes.models import ContentType
+from user_profile.permissions import IsUser, IsModerator, IsSuperuser, IsHaveAccess
 
 
-class QuestonView(viewsets.ModelViewSet):
+class MixedPermission(object):
+    permission_action_map = {}
+
+    def get_permissions(self):
+        try:
+            return [permission() for permission in
+                    self.permission_action_map[self.action]]
+
+        except KeyError:
+            return [permission() for permission in self.permission_classes]
+
+
+class MixedPermissionAction(MixedPermission):
+    permission_action_map = {'create': [IsHaveAccess],
+                             'update': [IsHaveAccess]}
+
+
+class QuestonView(MixedPermissionAction, viewsets.ModelViewSet ):
     """
     Returns a list of questions.
     Edit, delete and add new ones.
@@ -25,7 +44,7 @@ class QuestonView(viewsets.ModelViewSet):
         return serializer_class(*args, **kwargs)
 
 
-class AnswerView(viewsets.ModelViewSet):
+class AnswerView(MixedPermissionAction, viewsets.ModelViewSet):
     """
     Returns a list of answers.
     Edit, delete and add new ones.
@@ -34,7 +53,7 @@ class AnswerView(viewsets.ModelViewSet):
     serializer_class = serializers.AnswerSerializer
 
 
-class CommentView(viewsets.ModelViewSet):
+class CommentView(MixedPermissionAction, viewsets.ModelViewSet):
     """
     Returns a list of comments.
     Edit, delete and add new ones.
@@ -43,12 +62,14 @@ class CommentView(viewsets.ModelViewSet):
     serializer_class = serializers.CommentSerializer
 
 
-class VoteView(viewsets.ModelViewSet):
+
+class VoteView(MixedPermissionAction, viewsets.ModelViewSet):
     """
     Returns a list of views.
     """
     queryset = Vote.objects.all()
     serializer_class = serializers.VoteSerializer
+
 
     def update(self, request, *args, **kwargs):
         self.check_of_correct_vote(request)

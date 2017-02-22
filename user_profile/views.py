@@ -1,3 +1,4 @@
+from rest_framework import permissions
 from rest_framework import viewsets
 from user_profile.models import User
 from user_profile import serializers
@@ -10,6 +11,8 @@ class UserProfile(viewsets.ModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
 
     def get_serializer(self, *args, **kwargs):
         serializers_map = {
