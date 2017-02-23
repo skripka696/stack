@@ -1,13 +1,12 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-from question.serializers import QuestionSerializer, AnswerSerializer
 from user_profile.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
 
-    questions = QuestionSerializer(many=True, required=False)
-    answers = AnswerSerializer(many=True, required=False)
+    # questions = QuestionSerializer(many=True, required=False)
+    # answers = AnswerSerializer(many=True, required=False)
 
     skill = serializers.SlugRelatedField(
         many=True,

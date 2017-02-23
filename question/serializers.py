@@ -7,12 +7,12 @@ from tag.models import Tag
 from user_profile.models import User
 from django.utils import timezone
 
+from user_profile.serializers import UserSerializer
+
 
 class CommentSerializer(serializers.ModelSerializer):
-    user = serializers.SlugRelatedField(
-        read_only=True,
-        slug_field="username",
-        required=False)
+    user = UserSerializer(read_only=True,
+                          default=serializers.CurrentUserDefault())
 
     content_object = serializers.SlugRelatedField(
         read_only=True,
@@ -26,29 +26,19 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class AnswerSerializer(serializers.ModelSerializer):
-    # user = serializers.SlugRelatedField(
-    #     read_only=True,
-    #     slug_field="username",
-    #     required=False)
+    user = UserSerializer(read_only=True,
+                          default=serializers.CurrentUserDefault())
 
-    question = serializers.SlugRelatedField(
-         read_only=True,
-         slug_field="title",
-         required=False
-    )
-
-    comment = CommentSerializer(many=True)
+    comment = CommentSerializer(read_only=True, many=True)
 
     class Meta:
         model = Answer
-        fields = '__all__'
+        fields = ('user', 'question', 'create_date', 'title', 'content', 'comment', 'vote')
 
 
 class QuestionSerializer(serializers.ModelSerializer):
-    user = serializers.SlugRelatedField(
-         read_only=True,
-         slug_field="username",
-         required=False)
+    user = UserSerializer(read_only=True,
+                          default=serializers.CurrentUserDefault())
 
     tag = serializers.SlugRelatedField(
         many=True,
@@ -69,19 +59,8 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 
 class QuestionPostSerializer(QuestionSerializer):
-    user = serializers.SlugRelatedField(
-        queryset=User.objects.all(),
-        slug_field="username")
-
-    tag = serializers.SlugRelatedField(
-        queryset=Tag.objects.all(),
-        many=True,
-        slug_field='name')
-
-    comment = serializers.SlugRelatedField(
-        queryset=Comment.objects.all(),
-        many=True,
-        slug_field='description')
+    user = UserSerializer(read_only=True,
+                          default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Question

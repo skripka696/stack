@@ -6,6 +6,7 @@ from question.models import Question, Answer, Comment, Vote
 from question import serializers
 from django.contrib.contenttypes.models import ContentType
 from user_profile.permissions import IsHaveAccess
+from rest_framework.permissions import IsAuthenticated
 
 
 class MixedPermission(object):
@@ -21,7 +22,7 @@ class MixedPermission(object):
 
 
 class MixedPermissionAction(MixedPermission):
-    permission_action_map = {'create': [IsHaveAccess],
+    permission_action_map = {'create': [IsAuthenticated, IsHaveAccess],
                              'update': [IsHaveAccess]}
 
 
