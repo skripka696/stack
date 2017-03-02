@@ -1,39 +1,24 @@
 from rest_framework import serializers
-from rest_framework.fields import SerializerMethodField
-
 from question.models import Question, Answer, Comment, Vote
 from django.conf import settings
-from tag.models import Tag
-from user_profile.models import User
+from generic_relations.relations import GenericRelatedField
+from django.contrib.contenttypes.models import ContentType
+
+
 from django.utils import timezone
 
 from user_profile.serializers import UserSerializer
-
-
-class CommentSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True,
-                          default=serializers.CurrentUserDefault())
-
-    content_object = serializers.SlugRelatedField(
-        read_only=True,
-        slug_field="title",
-        required=False
-    )
-
-    class Meta:
-        model = Comment
-        fields = '__all__'
 
 
 class AnswerSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True,
                           default=serializers.CurrentUserDefault())
 
-    comment = CommentSerializer(read_only=True, many=True)
+    # comment = CommentSerializer(read_only=True, many=True)
 
     class Meta:
         model = Answer
-        fields = ('user', 'question', 'create_date', 'title', 'content', 'comment', 'vote')
+        fields = ('user', 'question', 'create_date', 'title', 'content', 'vote')
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -46,16 +31,34 @@ class QuestionSerializer(serializers.ModelSerializer):
         slug_field='name',
         required=False)
     answers = AnswerSerializer(required=False, many=True, read_only=True)
-    comment = CommentSerializer(many=True, read_only=True)
+    # comment = CommentSerializer(many=True, read_only=True)
+    
+    # def to_internal_value(self, data):
+    #     return super(QuestionSerializer, self).is_valid(self, {'id': data})
 
     class Meta:
         model = Question
         fields = ('id', 'tag', 'user', 'create_date', 'title', 'content',
-                  'vote', 'answers', 'comment', 'slug')
+                  'vote', 'answers', 'slug')
         lookup_field = 'slug'
         extra_kwargs = {
             'url': {'lookup_field': 'slug'}
         }
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True,
+                          default=serializers.CurrentUserDefault())
+
+    def validate(self, attrs):
+        change_model = attrs['content_type'].model_class()
+        if not change_model.objects.filter(id=attrs['object_id']).exists():
+            raise serializers.ValidationError('Object does not exist')
+        return attrs
+
+    class Meta:
+        model = Comment
+        fields = '__all__'
 
 
 class QuestionPostSerializer(QuestionSerializer):
@@ -68,12 +71,18 @@ class QuestionPostSerializer(QuestionSerializer):
 
 
 class VoteSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True,
+                          default=serializers.CurrentUserDefault())
+    content_type = serializers.SlugRelatedField(queryset=ContentType.objects.all(),
+                                                slug_field='model')
 
     class Meta:
         model = Vote
         fields = ('id', 'choice', 'rating', 'object_id', 'user', 'content_type', 'updated_at')
 
     def validate(self, attrs):
+        content_type = ContentType.objects.get(model=attrs['content_type'])
+        attrs['content_type'] = content_type
         if self._context['view'].action == 'create':
             self.check_user_rating(attrs)
             change_model = attrs['content_type'].model_class()

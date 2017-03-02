@@ -1,4 +1,6 @@
 from rest_framework import permissions
+from rest_framework import status
+from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.exceptions import APIException
 
@@ -70,29 +72,41 @@ class VoteView(MixedPermissionAction, viewsets.ModelViewSet):
     queryset = Vote.objects.all()
     serializer_class = serializers.VoteSerializer
 
+    def create(self, request, *args, **kwargs):
+        change_model = ContentType.objects.get(
+            model=request.data['content_type'])
+        change_model_vote = change_model.model_class().objects.get(
+            id=request.data['object_id'])
+        if self.set_up(request):
+            change_model_vote.vote += 1
+        elif self.set_down(request):
+            change_model_vote.vote -= 1
+        change_model_vote.save()
+        return super(VoteView, self).create(request, *args, **kwargs)
+
     def update(self, request, *args, **kwargs):
         self.check_of_correct_vote(request)
         return super(VoteView, self).update(request, *args, **kwargs)
 
     def check_of_correct_vote(self, request):
-        change_model = ContentType.objects.get(id=request.data['content_type'])
-        vote = Vote.objects.get(user=request.data['user'])
+        change_model = ContentType.objects.get(model=request.data['content_type'])
         change_model_vote = change_model.model_class().objects.get(
-            id=request.data['object_id']).vote
+            id=request.data['object_id'])
+        vote = Vote.objects.get(id=self.kwargs['pk'])
         if request.data['choice'] == vote.choice:
             raise APIException('You can only change your vote', 400)
         if self.change_up(request, vote):
-            change_model_vote += 1
+            change_model_vote.vote += 1
             request.data['type'] = 'N'
         elif self.change_down(request, vote):
-            change_model_vote -= 1
+            change_model_vote.vote -= 1
             request.data['type'] = 'N'
         elif vote.choice == 'N':
             if self.set_up(request):
-                change_model_vote += 1
+                change_model_vote.vote += 1
             elif self.set_down(request):
-                change_model_vote -= 1
-        change_model.save()
+                change_model_vote.vote -= 1
+        change_model_vote.save()
 
     def change_up(self, request, vote):
         return vote.choice == 'D' and request.data['choice'] == 'U'
