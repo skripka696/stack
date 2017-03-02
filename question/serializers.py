@@ -10,6 +10,21 @@ from django.utils import timezone
 from user_profile.serializers import UserSerializer
 
 
+class CommentSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True,
+                          default=serializers.CurrentUserDefault())
+
+    def validate(self, attrs):
+        change_model = attrs['content_type'].model_class()
+        if not change_model.objects.filter(id=attrs['object_id']).exists():
+            raise serializers.ValidationError('Object does not exist')
+        return attrs
+
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+
 class AnswerSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True,
                           default=serializers.CurrentUserDefault())
@@ -31,7 +46,7 @@ class QuestionSerializer(serializers.ModelSerializer):
         slug_field='name',
         required=False)
     answers = AnswerSerializer(required=False, many=True, read_only=True)
-    # comment = CommentSerializer(many=True, read_only=True)
+    comment = CommentSerializer(many=True, read_only=True)
     
     # def to_internal_value(self, data):
     #     return super(QuestionSerializer, self).is_valid(self, {'id': data})
@@ -39,26 +54,11 @@ class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
         fields = ('id', 'tag', 'user', 'create_date', 'title', 'content',
-                  'vote', 'answers', 'slug')
+                  'vote', 'answers', 'slug', 'comment')
         lookup_field = 'slug'
         extra_kwargs = {
             'url': {'lookup_field': 'slug'}
         }
-
-
-class CommentSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True,
-                          default=serializers.CurrentUserDefault())
-
-    def validate(self, attrs):
-        change_model = attrs['content_type'].model_class()
-        if not change_model.objects.filter(id=attrs['object_id']).exists():
-            raise serializers.ValidationError('Object does not exist')
-        return attrs
-
-    class Meta:
-        model = Comment
-        fields = '__all__'
 
 
 class QuestionPostSerializer(QuestionSerializer):
