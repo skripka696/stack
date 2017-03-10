@@ -1,6 +1,6 @@
-import { 
+import {
 	Component,
-	Input, 
+	Input,
 	OnInit,
 	trigger,
 	state,
@@ -12,7 +12,6 @@ import {
 	FormControl,
 	FormBuilder,
 	FormGroup,
-	Validators
 } from '@angular/forms';
 import { Comment } from '../models/comment.model';
 import { CommentService } from '../models/comment.service';
@@ -48,13 +47,7 @@ export class CommentComponent implements OnInit{
 
 	constructor(private userService: UserService,
 				private commentService: CommentService,
-				private formBuilder: FormBuilder){
-		console.log('PARENT');
-		console.log(this.parent);
-		if (typeof this.comments == 'undefined'){
-			this.comments = new Array<Comment>();
-		}
-	}
+				private formBuilder: FormBuilder){}
 
 	buildCommentForm(): void{
 		this.commentForm = this.formBuilder.group({
@@ -84,11 +77,8 @@ export class CommentComponent implements OnInit{
 	}
 
 	addNewComment(data: Object){
-		console.log(data);
 		let newComment = new Comment(data);
-		console.log(newComment);
 		this.comments.push(newComment);
-		console.log(this.comments);
 	}
 
 	sendComment(){
@@ -96,16 +86,14 @@ export class CommentComponent implements OnInit{
 			'description': this.commentDescription.value,
 			'object_id': this.parent.id,
 			'content_type': this.parent.constructor.name.toLowerCase()
-		}
+		};
 		this.commentService.createNewComment(data)
 							.subscribe(
 								value => {
-									console.log(value);
-									this.addNewComment(data);				
+									this.addNewComment(value);
 								},
 								error => {
 									console.log(error);
-									this.addNewComment(data);
 								}
 							);
 	}

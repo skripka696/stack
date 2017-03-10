@@ -13,12 +13,9 @@ from user_profile.serializers import UserSerializer
 class CommentSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True,
                           default=serializers.CurrentUserDefault())
-
-    def validate(self, attrs):
-        change_model = attrs['content_type'].model_class()
-        if not change_model.objects.filter(id=attrs['object_id']).exists():
-            raise serializers.ValidationError('Object does not exist')
-        return attrs
+    content_type = serializers.SlugRelatedField(
+        queryset=ContentType.objects.all(),
+        slug_field='model')
 
     class Meta:
         model = Comment
@@ -28,12 +25,12 @@ class CommentSerializer(serializers.ModelSerializer):
 class AnswerSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True,
                           default=serializers.CurrentUserDefault())
-
-    # comment = CommentSerializer(read_only=True, many=True)
+    comment = CommentSerializer(read_only=True, many=True)
 
     class Meta:
         model = Answer
-        fields = ('user', 'question', 'create_date', 'title', 'content', 'vote')
+        fields = ('id', 'user', 'question', 'create_date', 'title', 'content',
+                  'vote', 'comment')
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -78,7 +75,8 @@ class VoteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Vote
-        fields = ('id', 'choice', 'rating', 'object_id', 'user', 'content_type', 'updated_at')
+        fields = ('id', 'choice', 'rating', 'object_id', 'user', 'content_type',
+                  'updated_at')
 
     def validate(self, attrs):
         content_type = ContentType.objects.get(model=attrs['content_type'])

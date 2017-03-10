@@ -3,16 +3,16 @@ import { Answer } from './answer.model';
 import { Comment } from './comment.model';
 
 export class Question{
-	public user: User
-	public title: string
-	public content: string
-	public vote: number
-	public slug: string
-	public id?: number
-	public tag?: Array<string>
-	public create_date: Date
-	public answers: Array<Answer> = []
-	public comments: Array<Comment> = []
+	public user: User;
+	public title: string;
+	public content: string;
+	public vote: number;
+	public slug: string;
+	public id: number;
+	public tag: Array<string>;
+	public create_date: Date;
+	public answers: Array<Answer> = [];
+	public comments: Array<Comment> = [];
 
 	constructor({user, title, content, vote, slug, id, tag, create_date, answers, comment}){
 		this.user = new User(user);
@@ -36,8 +36,6 @@ export class Question{
 		}
 		if(comment){
 			for (let current_comment of comment){
-				console.log(current_comment);
-				console.log(current_comment.user);
 				this.comments.push(new Comment(current_comment));
 			}
 		}

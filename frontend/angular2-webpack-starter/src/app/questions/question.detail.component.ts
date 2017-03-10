@@ -22,9 +22,7 @@ export class QuestionDetailComponent implements OnInit{
 				private route: ActivatedRoute){}
 
 	updateQuestion(value: any){
-		console.log(value);
 		this.question = new Question(value);
-		console.log(this.question);
 	}
 
 	getQuestionData(){
@@ -34,7 +32,7 @@ export class QuestionDetailComponent implements OnInit{
       					 			this.updateQuestion(value);
       					 		},
       					 		error => error
-      					 	);		
+      					 	);
 	}
 
 	ngOnInit(){

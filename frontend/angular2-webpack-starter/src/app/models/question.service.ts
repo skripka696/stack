@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Question } from './question.model';
-import { 
-	Http, 
-	Headers, 
-	RequestOptions, 
-	Response 
+import {
+	Http,
+	Headers,
+	RequestOptions,
+	Response
 } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { CommonService } from './common.service';
@@ -28,14 +28,14 @@ export class QuestionService extends CommonService{
 	getQuestionBySlug(questionSlug: string): Observable<Response>{
 		let options = new RequestOptions({ headers: this.getCSRFToken() });
 		return this.http.get(`${this.serverName}/api/question/${questionSlug}/`, options)
-						.map((response: Response) => response.json());	
+						.map((response: Response) => response.json());
 	}
 
 	getQuestionsByTag(questionTag: string): Array<Question>{
 		return [];
 	}
 
-	sendVote(objectType: string, questionId: number, choice: string){
+	sendVote(objectType: string, questionId: number, choice: string): Observable<Response>{
 		let options = this.jwt();
 		let data = {
 			'content_type': objectType,
@@ -43,7 +43,7 @@ export class QuestionService extends CommonService{
 			'update_at': new Date(),
 			'choice': choice == 'up' && 'U' || 'D',
 			'rating': 1
-		}
+		};
 		console.log(data);
 		console.log(this.http);
 		return this.http.post(`${this.serverName}/api/vote/`, data, options)

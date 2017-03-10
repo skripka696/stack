@@ -1,19 +1,15 @@
 import { User } from './user.model';
 
 export class Comment{
-	public user: User
-	public like: number
-	public create_date?: Date
-	public description: string
-	public object_id: number
-	public content_type: string
+	public user: User;
+	public like: number;
+	public create_date?: Date;
+	public description: string;
+	public object_id: number;
+	public content_type: string;
 
 	constructor({description, object_id, content_type, like, create_date, user}){
-		if (typeof user !== 'undefined'){
-			this.user = new User(user);
-		}else{
-			this.user = new User('', '', '', '', '');
-		}
+    this.user = new User(user);
 		if (like){
 			this.like = like;
 		}else{

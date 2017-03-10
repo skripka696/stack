@@ -1,7 +1,7 @@
-import { 
-	Component, 
-	Input, 
-	OnInit 
+import {
+	Component,
+	Input,
+	OnInit
 } from '@angular/core';
 import { Answer } from '../models/answer.model';
 import { AnswerService } from '../models/answer.service';
@@ -17,7 +17,8 @@ export class AnswersComponent implements OnInit{
 	@Input() answers;
 	@Input() parent;
 
-	constructor(private userService: UserService){}
+	constructor(private userService: UserService,
+              private answerService: AnswerService){}
 
 	ngOnInit(){}
 
@@ -32,5 +33,10 @@ export class AnswersComponent implements OnInit{
 	sendAnswerVote(vote: string, answer: Answer){
 		console.log(vote);
 		console.log(answer);
+    this.answerService.sendVote(vote, answer)
+                      .subscribe(
+                        value => console.log(value),
+                        error => console.log(error)
+                      )
 	}
 }
