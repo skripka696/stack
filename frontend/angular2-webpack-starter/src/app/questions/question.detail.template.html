@@ -1,15 +1,41 @@
 <div *ngIf="question" id="question">
 	<div>
-		<h2 class="title">{{ question.title }}</h2>
+		<h2 class="title question-title">{{ question.title }}</h2>
 		<div id="content">
-			<div id="votes">
-				<i class="fa fa-3x fa-caret-up" (click)="sendVote('up');" ></i>
-				<h3><span>{{ question.vote }}</span></h3>
-				<i class="fa fa-3x fa-caret-down" (click)="sendVote('down');"></i>
+			<div>
+				<div class="votes">
+					<i class="fa fa-3x fa-caret-up" (click)="sendVote('up');" ></i>
+					<h3><span>{{ question.vote }}</span></h3>
+					<i class="fa fa-3x fa-caret-down" (click)="sendVote('down');"></i>
+				</div>
+				<div class="question-content">
+					<div>
+						<div class="question">
+							<h5>{{ question.content }}</h5>
+						</div>
+						<div class="author">
+							<h5>Asked:</h5>
+							<span class="published-time">
+		                    	<i class="fa fa-calendar"></i>
+		                    	{{ getCorrectDate(question) }}
+		                    </span>
+							<img class="avatar img-responsive img-circle" src="{{ question.user.avatar_url }}" />
+							<p>{{ getFullAuthorName(question.user) }}</p>
+						</div>
+					</div>
+					<div class="tags widget tag-cloud">
+						<ul *ngIf="question.tag">
+							<li *ngFor="let tag of question.tag">
+								<a [routerLink]="['/questions']">{{ tag }}</a>
+							</li>
+						</ul>
+					</div>
+					<comments [parent]="question" [comments]="question.comments"></comments>
+				</div>		
 			</div>
-			<div class="question">
-				<h5>{{ question.content }}</h5>
-			</div>
+			<div *ngIf="question.answers" id="answers" class="comments-area clearfix mt-50 wow fadeInUp animated">
+				<answers [parent]="question" [answers]="question.answers"></answers>
+			</div>	
 		</div>
 	</div>
 </div>

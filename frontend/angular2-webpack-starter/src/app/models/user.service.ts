@@ -27,4 +27,8 @@ export class UserService extends CommonService{
 		return this.http.post(`${this.serverName}/api-token-auth/`, JSON.stringify(user), options)
 							 .map((response: Response) => response.json());
 	}
+
+	public getFullName(user: User){
+		return user.first_name && `${user.first_name} ${user.last_name}` || user.username;
+	}
 }

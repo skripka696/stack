@@ -1,0 +1,15 @@
+ul.comments{
+	list-style-type: none;
+	padding: 0;
+}
+
+.comments li{
+	border-top: 1px solid rgba(0,0,0,.1);
+	margin: 7px 0px;
+	word-break: break-all;
+	padding: 7px 0px 0px 20px;
+}
+
+li span{
+	font-size: 12px;
+}

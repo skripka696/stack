@@ -1,0 +1,15 @@
+<div id="comments">
+	<ul class="comments" *ngIf="comments">
+		<li *ngFor="let comment of comments">
+			<span>{{ comment.description }} – {{ getFullAuthorName(comment.user) }} {{ getCorrectDate(comment) }}</span>
+		</li>
+	</ul>
+	<div>
+		<form [@hideForm]="hideForm" [formGroup]="commentForm">
+			<input type="text" formControlName="description" class="form-control" />
+		</form>
+	</div>
+	<div>
+		<button [hidden]="hideButton" class="btn btn-outline btn-radius btn-xs pull-right" (click)="openForm()">add comment</button>
+	</div>
+</div>

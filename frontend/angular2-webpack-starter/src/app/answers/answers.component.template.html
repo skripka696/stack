@@ -1,0 +1,26 @@
+<h3 class="small-title title">{{ answers.length }} Answers</h3>
+<ul *ngFor="let answer of answers" class="answers"> 
+	<li class="media">
+		<div class="media-body">
+        	<div class="votes">
+				<i class="fa fa-3x fa-caret-up" (click)="sendAnswerVote('up', answer);" ></i>
+				<h3><span>{{ answer.vote }}</span></h3>
+				<i class="fa fa-3x fa-caret-down" (click)="sendAnswerVote('down', answer);"></i>
+			</div>
+			<div class="answer-content">
+				<div class="answer">
+            		<h5>{{ answer.content }}</h5>
+        		</div>
+        		<div class="author">
+					<h5>Asked:</h5>
+					<span class="published-time">
+                    	<i class="fa fa-calendar"></i>
+                    	{{ getCorrectDate(answer) }}
+                    </span>
+					<img class="avatar img-responsive img-circle" src="{{ answer.user.avatar_url }}" />
+					<p>{{ getFullAuthorName(answer.user) }}</p>
+				</div>
+			</div>
+		</div>
+	</li>
+</ul>

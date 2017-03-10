@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { QuestionService } from '../models/question.service';
 import { Question } from '../models/question.model';
+import { User } from '../models/user.model';
+import { UserService } from '../models/user.service';
+import { Answer } from '../models/answer.model';
+import { AnswerService } from '../models/answer.service';
 import 'rxjs/add/operator/switchMap';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
@@ -8,35 +12,50 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 	selector: 'question-detail',
 	templateUrl: './question.detail.template.html',
 	styleUrls: ['./question.detail.style.css'],
-	providers: [ QuestionService ]
+	providers: [ QuestionService, UserService ]
 })
 export class QuestionDetailComponent implements OnInit{
 	question? : Question;
 
 	constructor(private questionService: QuestionService,
+				private userService: UserService,
 				private route: ActivatedRoute){}
 
-	ngOnInit(){
+	updateQuestion(value: any){
+		console.log(value);
+		this.question = new Question(value);
+		console.log(this.question);
+	}
+
+	getQuestionData(){
 		this.route.params.switchMap((params: Params) => this.questionService.getQuestionBySlug(params['slug']))
       					 .subscribe(
       					 		value => {
-      					 			this.question = new Question(value);
-  					 			},
+      					 			this.updateQuestion(value);
+      					 		},
       					 		error => error
-      					 	);
+      					 	);		
+	}
+
+	ngOnInit(){
+		this.getQuestionData();
 	}
 
 	sendVote(vote: string){
-		console.log(vote);
-		console.log(vote == 'up');
-		console.log(this.question.id);
 		this.questionService.sendVote('question', this.question.id, vote)
 							.subscribe(
 								value => {
-									console.log(value);
-									// this.question.vote = value;
+									this.getQuestionData();
 								},
 								error => error
 							);
+	}
+
+	getCorrectDate(question: Question): string{
+		return question.create_date.getHours() + ":" + question.create_date.getMinutes() ;
+	}
+
+	getFullAuthorName(user: any): string{
+		return this.userService.getFullName(user);
 	}
 }

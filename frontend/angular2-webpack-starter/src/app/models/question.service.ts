@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Question } from './question.model';
-import { Http, Headers, RequestOptions, Response } from '@angular/http';
+import { 
+	Http, 
+	Headers, 
+	RequestOptions, 
+	Response 
+} from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { CommonService } from './common.service';
 import 'rxjs/add/operator/map';
@@ -35,6 +40,7 @@ export class QuestionService extends CommonService{
 		let data = {
 			'content_type': objectType,
 			'object_id': questionId,
+			'update_at': new Date(),
 			'choice': choice == 'up' && 'U' || 'D',
 			'rating': 1
 		}

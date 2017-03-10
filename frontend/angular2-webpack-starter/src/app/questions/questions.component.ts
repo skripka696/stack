@@ -37,4 +37,8 @@ export class QuestionsComponent implements OnInit{
 	public ngOnInit(){
 		this.loadAllQuestions();
 	}
+
+	public getAnswersLen(question: Question): number{
+		return question.answers.length;
+	}
 }

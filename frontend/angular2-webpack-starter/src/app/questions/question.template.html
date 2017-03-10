@@ -15,7 +15,7 @@
 			</div>
 			<div class="answers">
 				<h5>
-					<span class="counter">0</span>
+					<span class="counter">{{ getAnswersLen(question) }}</span>
 				</h5>
 				<h6>answers</h6>
 			</div>
@@ -35,7 +35,7 @@
 			        </ul>
 		        </div>
 		        <div>
-		        	<p class="sup-description pull-right">{{ question.user }}</p>
+		        	<p class="sup-description pull-right">{{ question.user.username }}</p>
 	        	</div>
         	</div>
         </div>

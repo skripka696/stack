@@ -1,0 +1,53 @@
+.answer-content{
+	width: 88%;
+	display: inline-block;
+	vertical-align: top;
+	padding-top: 15px;
+	text-align: left; 
+}
+
+.avatar{
+	width: 60px;
+	height: 60px;
+}
+
+.title, .answers li{
+	padding-bottom: 20px;
+	border-bottom: 1px solid rgba(0,0,0,.1);
+}
+
+.answer{
+	min-height: 100px;
+	width: 90%;
+	display: table-cell;
+    vertical-align: text-top;
+}
+
+.votes{
+	color: #0c9d80;
+	width: 10%;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.votes h3{
+	margin-bottom: 0;
+}
+
+.author{
+	width: 7%;
+	text-align: center;
+	display: table-cell;
+    vertical-align: text-top;
+    padding-left: 10px;
+    border-left: 1px solid rgba(0,0,0,.1);
+}
+
+.author img{
+	width: 55px;
+	height: 55px;
+}
+
+.author p{
+	text-align: center;
+}
