@@ -48,7 +48,13 @@ export class CommentComponent implements OnInit{
 
 	constructor(private userService: UserService,
 				private commentService: CommentService,
-				private formBuilder: FormBuilder){}
+				private formBuilder: FormBuilder){
+		console.log('PARENT');
+		console.log(this.parent);
+		if (typeof this.comments == 'undefined'){
+			this.comments = new Array<Comment>();
+		}
+	}
 
 	buildCommentForm(): void{
 		this.commentForm = this.formBuilder.group({
@@ -74,20 +80,44 @@ export class CommentComponent implements OnInit{
 		}else{
 			this.hideForm = 'show';
 		}
-		// this.hideButton = true;
+		this.hideButton = true;
+	}
+
+	addNewComment(data: Object){
+		console.log(data);
+		let newComment = new Comment(data);
+		console.log(newComment);
+		this.comments.push(newComment);
+		console.log(this.comments);
 	}
 
 	sendComment(){
 		let data = {
-			'description': '',
+			'description': this.commentDescription.value,
 			'object_id': this.parent.id,
 			'content_type': this.parent.constructor.name.toLowerCase()
 		}
-		console.log(data);
-		// this.commentService.createNewComment(data)
-		// 					.subscribe(
-		// 						value => console.log(value),
-		// 						error => console.log(error)
-		// 					);
+		this.commentService.createNewComment(data)
+							.subscribe(
+								value => {
+									console.log(value);
+									this.addNewComment(data);				
+								},
+								error => {
+									console.log(error);
+									this.addNewComment(data);
+								}
+							);
+	}
+
+	eventHandler(event: any){
+		if (event.keyCode == 13){
+			this.hideForm = 'hide';
+			setTimeout(function(){
+				this.hideButton = false;
+			}.bind(this), 300);
+			this.sendComment();
+			this.commentForm.reset();
+		}
 	}
 }

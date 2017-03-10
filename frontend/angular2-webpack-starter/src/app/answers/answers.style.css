@@ -3,7 +3,8 @@
 	display: inline-block;
 	vertical-align: top;
 	padding-top: 15px;
-	text-align: left; 
+	text-align: left;
+	margin-bottom: 15px;
 }
 
 .avatar{

@@ -16,7 +16,7 @@ export class CommentService extends CommonService{
 	}
 
 	createNewComment(data: any): Observable<Response>{
-		let options = new RequestOptions({ headers: this.getCSRFToken() });
+		let options = this.jwt();
 		return this.http.post(`${this.serverName}/api/comment/`, data, options)
 						.map((response: Response) => response.json());
 	}

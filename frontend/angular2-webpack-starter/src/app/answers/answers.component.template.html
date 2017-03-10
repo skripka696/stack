@@ -21,6 +21,7 @@
 					<p>{{ getFullAuthorName(answer.user) }}</p>
 				</div>
 			</div>
+			<comments [parent]="answer" [comments]="answer.comments"></comments>
 		</div>
 	</li>
 </ul>

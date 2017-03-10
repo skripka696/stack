@@ -36,6 +36,8 @@ export class Question{
 		}
 		if(comment){
 			for (let current_comment of comment){
+				console.log(current_comment);
+				console.log(current_comment.user);
 				this.comments.push(new Comment(current_comment));
 			}
 		}
