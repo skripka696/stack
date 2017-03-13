@@ -22,14 +22,18 @@ export class QuestionDetailComponent implements OnInit{
 				private route: ActivatedRoute){}
 
 	updateQuestion(value: any){
-		this.question = new Question(value);
+    for (let key of Object.keys(value)){
+      if (this.question.hasOwnProperty(key)){
+        this.question[key] = value[key];
+      }
+    }
 	}
 
 	getQuestionData(){
 		this.route.params.switchMap((params: Params) => this.questionService.getQuestionBySlug(params['slug']))
       					 .subscribe(
       					 		value => {
-      					 			this.updateQuestion(value);
+      					 			this.question = new Question(value);
       					 		},
       					 		error => error
       					 	);
@@ -43,7 +47,7 @@ export class QuestionDetailComponent implements OnInit{
 		this.questionService.sendVote('question', this.question.id, vote)
 							.subscribe(
 								value => {
-									this.getQuestionData();
+									this.updateQuestion(value);
 								},
 								error => error
 							);

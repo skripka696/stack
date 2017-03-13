@@ -82,7 +82,9 @@ class VoteView(MixedPermissionAction, viewsets.ModelViewSet):
         elif self.set_down(request):
             change_model_vote.vote -= 1
         change_model_vote.save()
-        return super(VoteView, self).create(request, *args, **kwargs)
+        super(VoteView, self).create(request, *args, **kwargs)
+        return Response({'vote': change_model_vote.vote},
+                        status=status.HTTP_201_CREATED)
 
     def update(self, request, *args, **kwargs):
         self.check_of_correct_vote(request)

@@ -30,12 +30,24 @@ export class AnswersComponent implements OnInit{
 		return answer.create_date.getHours() + ":" + answer.create_date.getMinutes() ;
 	}
 
+  updateAnswer(value: Object, answer: Answer){
+    let changed_answer = this.answers.filter(function(value){
+      return value.id == answer.id;
+    });
+    for (let key of Object.keys(value)){
+      if (answer.hasOwnProperty(key)){
+        changed_answer[0][key] = value[key];
+      }
+    }
+
+  }
+
 	sendAnswerVote(vote: string, answer: Answer){
 		console.log(vote);
 		console.log(answer);
     this.answerService.sendVote(vote, answer)
                       .subscribe(
-                        value => console.log(value),
+                        value => this.updateAnswer(value, answer),
                         error => console.log(error)
                       )
 	}
